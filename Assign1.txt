@@ -1,0 +1,50 @@
+import java.io.*;
+import java.util.*;
+
+public class BookIndex {
+    private Map<String, Set<Integer>> index;
+
+    public BookIndex() {
+        index = new TreeMap<>(); // TreeMap for alphabetical sorting
+    }
+
+    public void processPage(String pageContent, int pageNumber) {
+        String[] words = pageContent.split("\\s+|\\p{Punct}+");
+        for (String word : words) {
+            word = word.toLowerCase();
+            if (!isCommonWord(word)) {
+                index.computeIfAbsent(word, k -> new HashSet<>()).add(pageNumber);
+            }
+        }
+    }
+
+    private boolean isCommonWord(String word) {
+        // Read common words from exclude-words.txt and check if the word is common
+        // Implement this method based on your file reading logic.
+        // Return true if the word is common, false otherwise.
+        // You can use a Set<String> to store common words.
+        // Example: Set<String> commonWords = readCommonWordsFromFile();
+        // return commonWords.contains(word);
+        return false; // Placeholder
+    }
+
+    public void writeIndexToFile() {
+        try (PrintWriter writer = new PrintWriter("index.txt")) {
+            for (Map.Entry<String, Set<Integer>> entry : index.entrySet()) {
+                String word = entry.getKey();
+                Set<Integer> pageNumbers = entry.getValue();
+                writer.println(word + " : " + String.join(",", pageNumbers.toString()));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        BookIndex bookIndex = new BookIndex();
+        // Read Page1.txt, Page2.txt, Page3.txt, and exclude-words.txt
+        // Process each page content and build the index
+        // Write the index to index.txt
+        // Implement the details based on your requirements.
+    }
+}
